@@ -1,0 +1,4 @@
+[*] Path: C:\Users\ElAsJay\Desktop\Programming\
+Python3
+Python_Study
+Web
