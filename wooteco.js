@@ -20,11 +20,12 @@ class App {
       console.log("숫자 야구 게임을 시작합니다.");
       
       let success = false;
-      //let count = 0;
       while(!success){
         this.input();
+        MissionUtils.Console.print("[*] COMPUTER: "+ this._computer);
+        MissionUtils.Console.print("[*] PLAYER: "+this._player);
+    
         success = this.check();
-        
       }
 
       if(this.end() == 2){
@@ -34,15 +35,27 @@ class App {
   }
 
   input(){
-    MissionUtils.Console.readLine('숫자를 입력해주세요 : ', (PLAYER_NUMBER) => {
-      const mapfn = (arg) => Number(arg);
-      this._player = Array.from(PLAYER_NUMBER, mapfn)
-    });
+    MissionUtils.Console.readLine('숫자를 입력해주세요 : ', (player_number) => {
+      let tmp = player_number.split('');
+      let len = tmp.length;
 
-    if(this._player.length > 3)
-      throw new Error("너무 많은 값을 입력했습니다. 게임을 종료합니다.");
-    //else if(this._player.length < 3)
-    //  throw new Error("너무 적은 값을 입력했습니다. 게임을 종료합니다.");
+      if(len > 3){
+        throw new Error("너무 많은 값을 입력했습니다. 게임을 종료합니다.");
+      }
+      else if(this._player.length < 3){
+        throw new Error("너무 적은 값을 입력했습니다. 게임을 종료합니다.");
+      }
+        
+      for(let i = 0; i < len ; i++){
+          if(this._player.includes(tmp[i])){
+              throw new Error("중복된 값을 입력했습니다. 게임을 종료합니다.");
+          }
+          else{
+              this._player[i] = Number(tmp[i]);
+          }
+      }
+  });
+    
     this._player.forEach((num)=>{
       if(!(num >= 1 && num <= 9)){
           throw new Error("잘못된 값을 입력했습니다. 게임을 종료합니다.");
@@ -51,13 +64,11 @@ class App {
   }
 
   check(){
-    console.log("[*] COMPUTER: "+ this._computer);
-    console.log("[*] PLAYER: "+this._player);
     let strike = 0;
     let ball = 0;
     for(let i = 0; i<3 ; i++){
       const INDEX = this._player.indexOf(this._computer[i]);
-      console.log("[*] INDEX: "+ INDEX);
+      MissionUtils.Console.print("[*] INDEX: "+ INDEX);
       if(INDEX > -1){
         if(i === INDEX){
           strike += 1;
@@ -66,57 +77,57 @@ class App {
           ball += 1;
         }
       }
-      console.log("[*] STRIKE: " + strike + " BALL: "+ball);
+      MissionUtils.Console.print("[*] STRIKE: " + strike + " BALL: "+ball);
     }
-    //console.log("[*] strike: "+ strike + " / ball: "+ ball);
+
     if(strike == 0){
       if(ball == 0){
-        console.log("낫싱");
+        MissionUtils.Console.print("낫싱");
       }
       else if(ball == 1){
-        console.log("1볼");
+        MissionUtils.Console.print("1볼");
       }
       else if(ball == 2){
-        console.log("2볼");
+        MissionUtils.Console.print("2볼");
       }
       else if(ball == 3){
-        console.log("3볼");
+        MissionUtils.Console.print("3볼");
       }
       else{
-        console.log("[🚨] 채점에 문제가 생겼습니다.");
+        MissionUtils.Console.print("[🚨] 채점에 문제가 생겼습니다.");
       }
     }
 
     else if(strike == 1){
       if(ball == 1){
-        console.log("1스트라이크1볼");
+        MissionUtils.Console.print("1스트라이크1볼");
       }
       else if(ball == 2){
-        console.log("1스트라이크2볼");
+        MissionUtils.Console.print("1스트라이크2볼");
       }
       else if(ball == 0){
-        console.log("1스트라이크");
+        MissionUtils.Console.print("1스트라이크");
       }
       else{
-        console.log("[🚨] 채점에 문제가 생겼습니다.");
+        MissionUtils.Console.print("[🚨] 채점에 문제가 생겼습니다.");
       }
     }
 
     else if(strike == 2){
       if(ball == 0){
-        console.log("2스트라이크");
+        MissionUtils.Console.print("2스트라이크");
       }
       else if(ball == 1){
-        console.log("2스트라이크1볼");
+        MissionUtils.Console.print("2스트라이크1볼");
       }
       else{
-        console.log("[🚨] 채점에 문제가 생겼습니다.");
+        MissionUtils.Console.print("[🚨] 채점에 문제가 생겼습니다.");
       }
     }
 
     else if(strike == 3){
-      console.log("3스트라이크");
-      console.log("3개의 숫자를 모두 맞히셨습니다! 게임 종료");
+      MissionUtils.Console.print("3스트라이크");
+      MissionUtils.Console.print("3개의 숫자를 모두 맞히셨습니다! 게임 종료");
       return true;
     }
 
@@ -129,6 +140,7 @@ class App {
     });
   }
 
-
 }
+
+
 module.exports = App;
