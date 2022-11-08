@@ -20,11 +20,11 @@ class App {
       console.log("숫자 야구 게임을 시작합니다.");
       
       let success = false;
-      let count = 0;
-      while(count < 5){
+      //let count = 0;
+      while(!success){
         this.input();
         success = this.check();
-        count += 1;
+        
       }
 
       if(this.end() == 2){
